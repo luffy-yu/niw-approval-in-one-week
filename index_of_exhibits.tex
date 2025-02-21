@@ -1,0 +1,56 @@
+\begin{center}
+    % \section{}{% create space
+    \section{\fontsize{20}{0}\selectfont Index of Exhibits}
+    % \section{}{% create space
+\end{center}
+
+\section{\red{Exhibit Commands Usage Examples (Remove This Section in Final Submission)}}
+
+\vspace{5mm}
+\textbf{1. Create an entry by referring to the index in body.tex}
+\begin{verbatim}
+\labelexhibit{cv}{CV of Mr. First Last}{cv}
+\end{verbatim}
+where "cv" is the label in the body.tex (that will be replaced by its index), "CV of Mr. First Last" is the text, and "cv" at the end is the label for this entry. It'll be like
+
+\labelexhibit{cv}{CV of Mr. First Last}{cv}
+
+\vspace{5mm}
+\textbf{2. Create an entry by creating a new index}
+\begin{verbatim}
+\labelexhibit{2}{CV of Mr. First Last}{2}
+\end{verbatim}
+where "2" is the index showing in "Exhibit 2", "CV of Mr. First Last" is the text, and "2" at the end is the label for this entry (that can be referred to in exhibits.tex). It'll be like
+
+\vspace{5mm}
+\labelexhibit{2}{CV of Mr. First Last}{2}
+
+\vspace{5mm}
+\red{This is helpful when creating a parent entry to encompass some existing children exhibits in body.tex. For example,}
+
+\begin{verbatim}
+\labelexhibit{3}{Master of Science Degree in Computer Science of Mr. First Last}{3}
+
+\labelexhibitsub{ms-in-cs}{Diploma Copy}{ms-in-cs}
+
+\labelexhibitsub{ms-in-cs-gpa}{Official Transcript}{ms-in-cs-gpa}
+\end{verbatim} will be like
+
+\labelexhibit{3}{Master of Science Degree in Computer Science of Mr. First Last}{3}
+
+\labelexhibitsub{ms-in-cs}{Diploma Copy}{ms-in-cs}
+
+\labelexhibitsub{ms-in-cs-gpa}{Official Transcript}{ms-in-cs-gpa}
+
+The labels "ms-in-cs" and "ms-in-cs-gpa" are in the body.tex, while "3" is not.
+
+More examples are coming below.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\labelexhibit{4}{Recommendation Letter from Prof. SOMEONE}{rl-prof-someone}
+
+\red{Note that the following documents are widely in use for the NIW application, so I have included them here.}
+
+\labelexhibit{white-house-list}{Critical and Emerging Technologies List 2024 Update}{white-house-list}
+
+\labelexhibit{Dhanasar}{Matter of DHANASAR, Petitioner, 26 I\&N Dec. 884 (AAO 2016)}{Dhanasar}

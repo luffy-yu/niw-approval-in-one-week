@@ -1,0 +1,258 @@
+%! Author = yuliu
+%! Date = 10/10/2024
+
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[letterpaper, 11pt]{article}
+% Set 1-inch margins and 0.5-inch header and footer
+\usepackage[margin=1in, headheight=0.5in, footskip=0.5in]{geometry}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+\usepackage{unicode-math} % this also loads fontspec
+\defaultfontfeatures{Scale=MatchLowercase}
+\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+% xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+\KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+\sbox\pandoc@box{#1}%
+\Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+\Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+\ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+\ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+\else\usebox{\pandoc@box}%
+\fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\ifLuaTeX
+\usepackage{luacolor}
+\usepackage[soul]{lua-ul}
+\else
+\usepackage{soul}
+\fi
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+hidelinks,
+pdfcreator={LaTeX via pandoc}}
+
+\usepackage{adjustbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Customized Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{color}
+
+% for strikethrough \st
+\usepackage{soul}
+
+\usepackage{blindtext}
+\usepackage{hyperref}
+\usepackage{crossreftools}
+
+\usepackage{xstring}
+\usepackage{xparse}
+
+\usepackage{xstring} % Required for \StrBefore and \StrBehind
+\usepackage{hyperref} % Required for \nameref functionality
+\usepackage{etoolbox} % Required for \protected@edef
+
+\usepackage[final]{pdfpages} % include pdf files
+\usepackage{graphicx} % Required for \graphicspath
+
+% Set the default path for figures and PDFs
+\graphicspath{{media/}{exhibits/}{photocopies/}{forms/}}
+
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\blue}[1]{{\color{blue}#1}}
+\newcommand{\green}[1]{{\color{green}#1}}
+
+% Placeholder for name
+\newcommand{\myname}{{\color{red}First Last~}}
+
+% Define \exhibittext to save exhibit text and number, with a conditional comma before #3 if #3 is not empty
+\newcommand{\exhibittext}[3]{%
+  \expandafter\gdef\csname #1text\endcsname{%
+    Exhibit #2%
+    \ifx\relax#3\relax % Check if #3 is empty
+      % Do nothing if #3 is empty
+    \else
+      ,~#3 % Add a comma and #3 if #3 is not empty
+    \fi
+  }%
+  \expandafter\gdef\csname #1num\endcsname{#2} % Save the exhibit number separately
+  \textcolor{blue}{\it \textbf{(Exhibit #2%
+    \ifx\relax#3\relax % Same check for display in blue
+      % Do nothing if #3 is empty
+      )
+    \else
+      , #3) % Add a comma and #3 if #3 is not empty
+    \fi
+  }}%
+  \label{#1} % Define a label
+}
+
+
+% Update \labelexhibit to create a new exhibit text combining old text and new text, and store with new label
+\newcommand{\labelexhibit}[3]{%
+  \ifcsname #3text\endcsname % Check if the new exhibit label already has text
+    \expandafter\edef\csname #3text\endcsname{Exhibit \csname #1num\endcsname~#2} % Append new text with a separator
+    % \expandafter\gdef\csname #3text\endcsname{~#2}
+    \textcolor{blue}{{\textbf{Exhibit \csname #1num\endcsname}~#2}}
+  \else
+    \expandafter\gdef\csname #3text\endcsname{Exhibit #1~#2} % Define new text if not previously defined
+    \textcolor{blue}{\textbf{Exhibit #1}~#2}
+  \fi
+  \label{#3} % Create a label for referencing with the new label
+}
+
+% Update \labelexhibit to create a new exhibit text combining old text and new text, and store with new label
+\newcommand{\labelexhibitsub}[3]{%
+  \ifcsname #3text\endcsname % Check if the new exhibit label already has text
+    \expandafter\edef\csname #3text\endcsname{Exhibit \csname #1num\endcsname~#2} % Append new text with a separator
+    % \expandafter\gdef\csname #3text\endcsname{~#2}
+    \textcolor{blue}{\textbf{\hspace{3.6em}\csname #1num\endcsname}~#2}
+  \else
+    \expandafter\gdef\csname #3text\endcsname{Exhibit #1~#2} % Define new text if not previously defined
+    \textcolor{blue}{\textbf{\hspace{3.6em}#1}~#2}
+  \fi
+  \label{#3} % Create a label for referencing with the new label
+}
+
+% Command to retrieve and display exhibit text split across two lines,
+% removing any content after the first comma in \exhibitText
+\newcommand{\refexhibitlabel}[1]{%
+  \ifcsname #1text\endcsname % Check if the exhibit text exists
+    \edef\fulltext{\csname #1text\endcsname} % Capture the saved text
+    \StrBefore{\fulltext}{~}[\exhibitNumber] % Extract text before ~
+    \StrBehind{\fulltext}{~}[\exhibitText]   % Extract text after ~
+    \begin{center}
+    \textcolor{blue}{\fontsize{20}{0}\selectfont\textbf{\exhibitNumber}} \vspace{3em} \par \textcolor{blue}{\fontsize{15}{0}\selectfont\exhibitText}
+    \vspace{2em}
+    \end{center}
+  \else
+    \textcolor{red}{Undefined exhibit: #1} % Error message if exhibit not found
+  \fi
+}
+
+% Command to retrieve and display exhibit text split across two lines,
+% removing any content after the first comma in \exhibitText
+\newcommand{\refexhibitsublabel}[1]{%
+  \ifcsname #1text\endcsname % Check if the exhibit text exists
+    \edef\fulltext{\csname #1text\endcsname} % Capture the saved text
+    \StrBefore{\fulltext}{~}[\exhibitNumber] % Extract text before ~
+    \StrBehind{\fulltext}{~}[\exhibitText]   % Extract text after ~
+    % \begin{center}
+    \vspace{1em}
+    \textcolor{blue}{\fontsize{15}{0}\selectfont\textbf{\exhibitNumber}}\hspace{1em}\textcolor{blue}{\fontsize{12}{0}\selectfont\exhibitText}
+    % \end{center}
+  \else
+    \textcolor{red}{Undefined exhibit: #1} % Error message if exhibit not found
+  \fi
+}
+
+% Command to retrieve and display exhibit text split across two lines,
+% removing any content after the first comma in \exhibitText
+\newcommand{\refexhibitaddsublabel}[3]{%
+  \ifcsname #1text\endcsname % Check if the exhibit text exists
+    \edef\fulltext{\csname #1text\endcsname} % Capture the saved text
+    \StrBefore{\fulltext}{~}[\exhibitNumber] % Extract text before ~
+    \StrBehind{\fulltext}{~}[\exhibitText]   % Extract text after ~
+    % \begin{center}
+    \vspace{1em}
+    \textcolor{blue}{\fontsize{15}{0}\selectfont\textbf{\exhibitNumber-#2}}\hspace{1em}\textcolor{blue}{\fontsize{12}{0}\selectfont#3}
+    % \end{center}
+  \else
+    \textcolor{red}{Undefined exhibit: #1} % Error message if exhibit not found
+  \fi
+}
+
+
+
+\newcommand{\refexhibit}[1]{\textcolor{blue}{\it \textbf{{\csname #1text\endcsname}}}}
+\newcommand{\refexhibitnum}[1]{\textcolor{blue}{\it \textbf{(Exhibit {\csname #1num\endcsname})}}}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Customized Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\author{}
+\date{}
+
+\begin{document}
+% no page numbers
+\thispagestyle{empty}
+% cover letter
+\input{cover_letter}
+
+% forms
+\includepdf[pages=-]{g-1145.pdf}
+\includepdf[pages=-]{i-907.pdf}
+\includepdf[pages=-]{i-140.pdf}
+\includepdf[pages=-]{eta-9089.pdf}
+\includepdf[pages=-]{eta-9089-appendix-a.pdf}
+\includepdf[pages=-]{eta-9089-final-determination.pdf}
+
+% passport, f1 visa, i-20, i-94
+\includepdf[pages=-]{passport.pdf}
+\includepdf[pages=-]{visa.pdf}
+\includepdf[pages=-]{i20.pdf}
+\includepdf[pages=-]{i94.pdf}
+
+\newpage
+% set page number from petition letter
+\setcounter{page}{1}
+% petition letter
+\input{body}
+
+% index of exhibits
+\newpage
+\input{index_of_exhibits}
+
+\newpage
+\input{exhibits}
+
+% Good Luck!
+
+\end{document}
